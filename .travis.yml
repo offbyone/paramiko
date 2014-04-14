@@ -1,32 +1,24 @@
 language: python
 python:
-  - "2.6"
-  - "2.7"
-  - "3.2"
-  - "3.3"
+  - 2.7
+env:
+  - TOX_ENV=py33
+  - TOX_ENV=py32
+  - TOX_ENV=py27
+  - TOX_ENV=py26
+  - TOX_ENV=docs
 install:
-  # Self-install for setup.py-driven deps
-  - pip install -e .
-  # Dev (doc/test running) requirements
-  - pip install coveralls # For coveralls.io specifically
-  - pip install -r dev-requirements.txt
+  - pip install --use-mirrors tox coveralls
 script:
-  # Main tests, with coverage!
-  - invoke coverage
-  # Ensure documentation & invoke pipeline run OK.
-  # Run 'docs' first since its objects.inv is referred to by 'www'.
-  # Also force warnings to be errors since most of them tend to be actual
-  # problems.
-  - invoke docs -o -W
-  - invoke www -o -W
-notifications:
-  irc:
-    channels: "irc.freenode.org#paramiko"
-    template:
-      - "%{repository}@%{branch}: %{message} (%{build_url})"
-    on_success: change
-    on_failure: change
-    use_notice: true
-  email: false
+  tox -e $TOX_ENV
+# notifications:
+#   irc:
+#     channels: "irc.freenode.org#paramiko"
+#     template:
+#       - "%{repository}@%{branch}: %{message} (%{build_url})"
+#     on_success: change
+#     on_failure: change
+#     use_notice: true
+#   email: false
 after_success:
   - coveralls
