@@ -12,7 +12,7 @@ install:
 script:
   tox -e $TOX_ENV
 # notifications:
-#   irc:
+#    irc:
 #     channels: "irc.freenode.org#paramiko"
 #     template:
 #       - "%{repository}@%{branch}: %{message} (%{build_url})"
